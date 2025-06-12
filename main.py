@@ -1,8 +1,14 @@
+from dotenv import load_dotenv
+import os
 import requests
+
+load_dotenv()
 
 gameName = input("Enter the game name: ")
 tagLine = input("Enter the tag line(Without the #): ")
-api_key = "RGAPI-137c5a19-6e44-4f0a-b46f-cb7184327f7f"
+api_key = os.getenv("api_key")
+if not api_key:
+    raise ValueError("API key not found. Please set the 'api_key' in your .env file.")
 api_url = "https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s" % (gameName, tagLine)
 api_url = api_url + "?api_key=" + api_key
 
