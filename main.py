@@ -42,4 +42,29 @@ def get_summoner_matches():
         print("Response content:", request.text)
 
 
-get_summoner_matches()
+def get_last_match():
+    if request.status_code == 200:
+        print("Request was successful!")
+        match_url = "https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids" % puuid
+        match_url = match_url + "?start=0&count=1&api_key=" + api_key
+        match_request = requests.get(match_url)
+        data = match_request.json()
+        print(data)
+    else:
+        print(f"Request failed with status code: {request.status_code}")
+        print("Response content:", request.text)
+
+def get_last_match_players():
+    if request.status_code == 200:
+        print("Request was successful!")
+        match_url = "https://americas.api.riotgames.com/lol/match/v5/matches/BR1_3108236037"
+        match_url = match_url + "?api_key=" + api_key
+        match_request = requests.get(match_url)
+        data = match_request.json().get("info", {}).get("participants", [])
+        for player in data:
+            print(f"Summoner Name: {player.get('summonerName')}, Champion: {player.get('championName')}, Kills: {player.get('kills')}, Deaths: {player.get('deaths')}, Assists: {player.get('assists')}")
+    else:
+        print(f"Request failed with status code: {request.status_code}")
+        print("Response content:", request.text)
+
+get_last_match_players()
